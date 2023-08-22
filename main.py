@@ -1,10 +1,11 @@
 import time
+from utils.Fila import Fila
+import random
 
-def time_pass():
-    tempo = 0
-    while True:
-        time.sleep(1)
-        print(f"20:00:{tempo}")
-        tempo += 1
+def passar_10_minutos():
+    ultimo_minuto = None
+    for minuto in range(10):
+        print(f"Tempo: 20h{minuto}")
+        ultimo_minuto = minuto
+    return ultimo_minuto
 
-time_pass()
