@@ -3,7 +3,7 @@ class Fila:
         self.dados = []
 
     def __str__(self):
-        return str(self.dados)
+        return self.dados
 
     def is_empty(self):
         return not self.dados
