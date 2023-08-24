@@ -5,13 +5,17 @@ from utils.Carga import Carga
 
 rm = '86108'
 total_mercadorias = 15
-ajudante = False
+mercadorias_inseridas_na_fila = 0
 fila_inicial = 3
 minutos_carregar_mercadoria = (int(rm[-2:]) % 3) + 1
 minutos_nova_carga_na_fila = 2
 minutos_entrada_motorista = 0
 tempo_espera_total = 0
+ajudante = None
+
 fila_carregar_mercadorias = Fila()
+fila_total_mercadorias = Fila()
+
 
 def gerar_carga(limite_carga: int) -> Fila:
     fila_total = Fila()
@@ -22,16 +26,45 @@ def gerar_carga(limite_carga: int) -> Fila:
 
 
 for minuto in range(100):
-    print(f"20h{minuto}")
+    print(f"######### 20h{minuto} #########")
     if minuto == 0:
         fila_total_mercadorias = gerar_carga(total_mercadorias)
         print(f"A van da empresa de logística chegou. {total_mercadorias} cargas aleatórias foram geradas...")
-        print(f"Vamos inserir as mercadorias na fila de carregamento. Para agilizar, vamos preparar {fila_inicial} "
+        time.sleep(1)
+        print(f"\nVamos inserir as mercadorias na fila de carregamento. Para agilizar, vamos preparar {fila_inicial} "
               f"mercadorias de uma só vez inicialmente. A partir daí, 1 nova mercadoria será inserida a cada "
-              f"dois minutos.")
-        fila_carregar_mercadorias.enfileirar(fila_total_mercadorias.desenfileirar())
-        print(fila_carregar_mercadorias)
+              f"dois minutos.\n")
+        time.sleep(1)
+        for i in range(fila_inicial):
+            fila_carregar_mercadorias.enfileirar(fila_total_mercadorias.desenfileirar())
+            mercadorias_inseridas_na_fila += 1
+            print(f"A mercadoria de ID {fila_carregar_mercadorias.dados[i]} foi adicionada à fila de carregamento."
+                  f" Restam {total_mercadorias - mercadorias_inseridas_na_fila} mercadorias para serem adicionadas à fila."
+                  f" Itens na fila até o momento: {fila_carregar_mercadorias.size()}")
+            time.sleep(1)
+    if ajudante is None:
+        resposta_ajudante = input("\nBom, já adicionamos três mercadorias à fila! Teremos um ajudante para nos auxiliar a "
+                         "carregá-las na van? Insira 'S' para SIM ou 'N' para não."
+                         "\nResposta: ").upper()
+        while resposta_ajudante not in ('S', 'N'):
+            time.sleep(1)
+            print("Por favor, insira uma resposta válida ('S' para SIM ou 'N' para não).")
+            resposta_ajudante = input("Resposta: ").upper()
+        if resposta_ajudante == 'S':
+            ajudante = True
+            time.sleep(1)
+            print("Ótimo! Vai ser muito mais rápido com um ajudante. Bora carregar essas mercadorias pra van!")
+        else:
+            ajudante = False
+            time.sleep(1)
+            print("Beleza! Vamos à guerra sem ajuda, então.")
 
+    if minuto % 2 == 0 and mercadorias_inseridas_na_fila < total_mercadorias and minuto > 0:
+        fila_carregar_mercadorias.enfileirar(fila_total_mercadorias.desenfileirar())
+        mercadorias_inseridas_na_fila += 1
+        print(f"A mercadoria de ID {fila_carregar_mercadorias.dados[-1]} foi adicionada à fila de carregamento."
+              f" Restam {total_mercadorias - mercadorias_inseridas_na_fila} mercadorias para serem adicionadas à fila."
+              f" Itens na fila até o momento: {fila_carregar_mercadorias.size()}")
     time.sleep(1.5)
 
 print(gerar_carga(15))

@@ -1,7 +1,7 @@
 import random
 class Carga:
     def __init__(self):
-        self.id_carga = int((random.random()) * 1000)
+        self.id_carga = random.randint(0, 999)
 
     def __str__(self):
         return str(self.id_carga)
