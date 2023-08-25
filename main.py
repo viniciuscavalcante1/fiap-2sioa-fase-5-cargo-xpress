@@ -37,9 +37,12 @@ for minuto in range(100):
         time.sleep(1)
         for i in range(fila_inicial):
             fila_carregar_mercadorias.enfileirar(fila_total_mercadorias.desenfileirar())
+            fila_carregar_mercadorias.dados[i].set_horario_fila_de_carga(f"20h{minuto}")
             mercadorias_inseridas_na_fila += 1
-            print(f"A mercadoria de ID {fila_carregar_mercadorias.dados[i]} foi adicionada à fila de carregamento."
-                  f" Restam {total_mercadorias - mercadorias_inseridas_na_fila} mercadorias para serem adicionadas à fila."
+            print(f"A mercadoria de ID {fila_carregar_mercadorias.dados[i]} foi adicionada à fila de carregamento às"
+                  f" {fila_carregar_mercadorias.dados[i].get_horario_fila_de_carga()}."
+                  f" Restam {total_mercadorias - mercadorias_inseridas_na_fila} mercadorias para serem"
+                  f" adicionadas à fila."
                   f" Itens na fila até o momento: {fila_carregar_mercadorias.size()}")
             time.sleep(1)
     if ajudante is None:
@@ -53,18 +56,29 @@ for minuto in range(100):
         if resposta_ajudante == 'S':
             ajudante = True
             time.sleep(1)
-            print("Ótimo! Vai ser muito mais rápido com um ajudante. Bora carregar essas mercadorias pra van!")
+            print("Ótimo! Vai ser muito mais rápido com um ajudante. Vamos colocar mais alguns produtos "
+                  "na fila, e aí, partiu carregar pra van!")
         else:
             ajudante = False
             time.sleep(1)
-            print("Beleza! Vamos à guerra sem ajuda, então.")
+            print("Beleza! Vamos à guerra sem ajuda, então. Só mais uns minutos e já iniciaremos.")
 
     if minuto % 2 == 0 and mercadorias_inseridas_na_fila < total_mercadorias and minuto > 0:
         fila_carregar_mercadorias.enfileirar(fila_total_mercadorias.desenfileirar())
+        fila_carregar_mercadorias.dados[-1].set_horario_fila_de_carga(f"20h{minuto}")
         mercadorias_inseridas_na_fila += 1
-        print(f"A mercadoria de ID {fila_carregar_mercadorias.dados[-1]} foi adicionada à fila de carregamento."
+        print(f"A mercadoria de ID {fila_carregar_mercadorias.dados[-1]} foi adicionada à fila de carregamento"
+              f" às {fila_carregar_mercadorias.dados[-1].get_horario_fila_de_carga()}."
               f" Restam {total_mercadorias - mercadorias_inseridas_na_fila} mercadorias para serem adicionadas à fila."
               f" Itens na fila até o momento: {fila_carregar_mercadorias.size()}")
+
+    if minuto == 10:
+        print(f"Bom, já se passaram 10 minutos! Agora são 20h{minuto} e já temos {mercadorias_inseridas_na_fila}"
+              f" mercadorias na fila, uma quantidade considerável! Vamos começar a carregar!")
+        time.sleep(1)
+        if ajudante is True:
+            print("Como temos um ajudante para nos auxiliar, podemos carregar dois produtos de uma só vez!")
+            time.sleep(1)
     time.sleep(1.5)
 
 print(gerar_carga(15))
