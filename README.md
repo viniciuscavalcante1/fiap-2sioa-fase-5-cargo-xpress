@@ -3,4 +3,4 @@
 Atividade desenvolvida em Python para reforçar os aprendizados referentes à estruturas de dados, pilhas e filas.
 
 ### Como rodar:
-Basta clonar o repositório e executar o arquivo `main.py`. 
+Basta clonar o repositório e executar o arquivo `main.py` no PyCharm.
